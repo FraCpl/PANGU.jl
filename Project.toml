@@ -1,9 +1,13 @@
 name = "PANGU"
 uuid = "80b6f24f-16b4-4ee0-b068-2d29409decd5"
-authors = ["F. Capolupo"]
 version = "0.1.0"
+authors = ["F. Capolupo"]
+
+[deps]
+JavaCall = "494afd89-becb-516b-aafa-70d2670c0337"
 
 [compat]
+JavaCall = "0.8.1"
 julia = "1.10"
 
 [extras]

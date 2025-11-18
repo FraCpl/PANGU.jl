@@ -8,6 +8,11 @@ end
     return
 end
 
+@inline function setFieldOfViewByDegrees(client, fov)
+    jcall(client, "setFieldOfViewByDegrees", Cvoid, (JavaCall.jfloat,), fov)
+    return
+end
+
 @inline function setSunByRadians(client, distSun, azSun, elSun)
     jcall(client, "setSunByRadians", Cvoid, (jdouble, jdouble, jdouble), distSun, azSun, elSun)
     return
@@ -24,4 +29,19 @@ end
 
 @inline function getImage(client)
     return jcall(client, "getImage",  Vector{jbyte}, ())
+end
+
+@inline function quit(client)
+    jcall(client, "quit", Cvoid, ())
+    return
+end
+
+@inline function quitServer(client)
+    jcall(client, "quitServer", Cvoid, ())
+    return
+end
+
+@inline function goodbye(client)
+    jcall(client, "goodbye", Cvoid, ())
+    return
 end

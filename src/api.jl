@@ -319,7 +319,6 @@ end
 # void setBandwidth(long, double, double, double)
 # void setCornerCubesD(uk.ac.dundee.spacetech.pangu.ClientLibrary.CornerCube[])
 # void setThermalSource(long, long, double, boolean, double, boolean, double, boolean)
-# void setCameraMotion(long, double, double, double, double, double, double, double, double, double, double, double, double, double, double, double, double, double, double)
 # void configureLightByDegrees(long, float, float, float, float, float)
 # void setEventLeakRate(long, double)
 # void setEventResetTime(long, double)

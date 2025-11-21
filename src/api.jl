@@ -1,3 +1,53 @@
+# Launch PANGU in server mode
+@inline function launchPangu(args::String="", port::Int=10363; rmlogs=true)
+    # Check if setup has been done or not
+    if isnothing(panguDir())
+        @error "PANGU has not been setup properly. Please launch 'setupPangu(panguDir=..., javasdkDir=...)' and retry"
+        return
+    end
+
+    # Check if PANGU is already running
+    if occursin("viewer.exe", read(`tasklist /FI "IMAGENAME eq viewer.exe"`, String))
+        @warn "PANGU is already running"
+        return
+    end
+
+    # Remove old logging files
+    if rmlogs
+        try
+            rm("PANGU.log", force=true)
+            rm("_PERF_RESULTS.txt", force=true)
+        catch
+        end
+    end
+
+    # Execute PANGU
+    cmdStr = "$(panguDir())bin/viewer -server -port $port $args"
+    @show cmdStr
+    run(`$(split(cmdStr))`, wait=false)
+end
+
+function makeConnection(port::Int=10363)
+    # Initialize the JVM
+    ENV["JAVA_HOME"] = javasdkDir()
+
+    # Initialize JVM with both jar and class directory in the classpath
+    jarPath = joinpath(panguDir(), "bin", "pangu_client_library.jar")
+    classDir = joinpath(panguDir(), "java", "pangu_client_library")
+    try
+        JavaCall.init(["-Xmx2G", "-Djava.class.path=$(jarPath);$(classDir)"])
+    catch
+    end
+
+    # Import the Java classes
+    ConnectionFactory = @jimport uk.ac.dundee.spacetech.pangu.ClientLibrary.ConnectionFactory
+    ClientConnection = @jimport uk.ac.dundee.spacetech.pangu.ClientLibrary.ClientConnection
+
+    # Connect client to PANGU server
+    return jcall(ConnectionFactory, "makeConnection", ClientConnection, (JString, jint), "localhost", port)
+end
+
+
 @inline function selectCamera(client, cid)
     jcall(client, "selectCamera", Cvoid, (JavaCall.jlong,), cid)
     return
@@ -27,8 +77,19 @@ end
     jcall(client, "getViewpointByCamera", Vector{jbyte}, (jlong,), cid)
 end
 
+@inline function getViewpointByQuaternion(client, x, y, z, qs, qx, qy, qz)
+    return jcall(client, "getViewpointByQuaternionD", Vector{jbyte}, (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), x, y, z, qs, qx, qy, qz)
+end
+
 @inline function getViewpointByQuaternionD(client, x, y, z, qs, qx, qy, qz)
     return jcall(client, "getViewpointByQuaternionD", Vector{jbyte}, (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), x, y, z, qs, qx, qy, qz)
+end
+
+@inline function setViewpointByQuaternion(client, pos, q)
+    x, y, z = pos
+    qs, qx, qy, qz = q
+    jcall(client, "setViewpointByQuaternion", Cvoid, (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), x, y, z, qs, qx, qy, qz)
+    return
 end
 
 @inline function setViewpointByQuaternion(client, x, y, z, qs, qx, qy, qz)

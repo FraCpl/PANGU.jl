@@ -1,13 +1,10 @@
 using PANGU
 using Images
 
-cams = PanguCamera()
-launchPangu(cams)
+# setupPangu(panguDir="C:/fc/software/Pangu/v8.01/", javasdkDir="C:/fc/software/JavaSDK/jdk-25.0.1/")
 
-# Make sure PANGU is open before launching the following commands
-p = PanguClient(cams)
-
-posWS_W = [0.0, 0.0, 1000.0]
-q_WS = [0.0; 1.0; 0.0; 0.0]
-img1 = getPanguImage(p, posWS_W, q_WS, 1.49e11, 0.0, π / 8, 1)
-colorview(Gray, img1 ./ 255)
+launchPangu("-image_format_tcp raw -grey_tcp")
+client = makeConnection()
+rawImage = PANGU.getViewpointByQuaternion(client, 0.0, 0.0, 1000.0, 0.0, 1.0, 0.0, 0.0)
+image = PANGU.rawGrey2image(rawImage, 512, 512)
+colorview(Gray, image ./ 255)

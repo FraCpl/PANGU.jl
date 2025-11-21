@@ -1,10 +1,15 @@
 module PANGU
 
 using JavaCall
+using Preferences
 
+export setupPangu
+include("setup.jl")
+
+export launchPangu, makeConnection
 include("api.jl")
 
-export launchPangu, getPanguImage, PanguCamera, PanguClient
+export PanguClient, PanguCamera, getPanguImage
 include("client.jl")
 
 end

@@ -3,13 +3,13 @@ module PANGU
 using JavaCall
 using Preferences
 
+# Directories setup
 include("setup.jl")
 
+# PANGU API
 include("api.jl")
 
-export PanguClient, PanguCamera, getPanguImage
-include("client.jl")
-
+# Image conversion tools
 include("image.jl")
 
 end

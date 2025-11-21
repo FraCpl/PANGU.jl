@@ -24,7 +24,7 @@
     # Execute PANGU
     cmdStr = "$(panguDir())bin/viewer -server -port $port $args"
     println("Launching PANGU server: $cmdStr")
-    run(`$(split(cmdStr))`, wait=false)
+    run(`$(Base.shell_split(cmdStr))`, wait=false)
 end
 
 function makeConnection(port::Int=10363)
@@ -300,6 +300,12 @@ end
 end
 
 @inline function setObjectPositionAttitude(client, n, x, y, z, q0, qx, qy, qz)
+    return jcall(client, "setObjectPositionAttitude", Cvoid, (jlong, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), n, x, y, z, q0, qx, qy, qz)
+end
+
+@inline function setObjectPositionAttitude(client, n, pos, q)
+    x, y, z = pos
+    q0, qx, qy, qz = q
     return jcall(client, "setObjectPositionAttitude", Cvoid, (jlong, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), n, x, y, z, q0, qx, qy, qz)
 end
 

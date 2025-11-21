@@ -12,4 +12,6 @@ include("api.jl")
 export PanguClient, PanguCamera, getPanguImage
 include("client.jl")
 
+include("image.jl")
+
 end

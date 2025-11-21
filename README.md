@@ -13,7 +13,7 @@ using PANGU
 setupPangu(panguDir="your/path/to/Pangu/v8.01/", javasdkDir="your/path/to/JavaSDK/jdk-25.0.1/")
 ```
 
-The following commands can be used to obtain a sample image:
+The following commands can be run to obtain a sample image:
 ```julia
 using PANGU
 using Images

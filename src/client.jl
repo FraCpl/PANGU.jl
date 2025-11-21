@@ -2,14 +2,14 @@ mutable struct PanguCamera
     fov_deg::Float64
     width::Int
     height::Int
-    img::Matrix{Int}
+    img::Matrix{UInt8}
 end
 
 function PanguCamera(; fov::Float64=-1.0, fov_deg::Float64=30.0, width::Int=800, height::Int=600)
     if fov > 0
         fov_deg = fov*180/π
     end
-    return PanguCamera(fov_deg, width, height, zeros(Int, height, width))
+    return PanguCamera(fov_deg, width, height, zeros(UInt8, height, width))
 end
 
 mutable struct PanguClient
@@ -50,26 +50,4 @@ function getPanguImage(p::PanguClient, posWS_W, q_WS, distSun, azSun, elSun, cam
     rawImage = getPanguImageRaw(p, posWS_W, q_WS, distSun, azSun, elSun, camID)
     @show size(rawImage)
     return rawGrey2image!(p.cam[camID].img, rawImage)
-end
-
-@inline function rawGrey2image!(image, rawImage)
-    if isempty(rawImage)
-        return Int[]
-    end
-    maxVal = 255# only 8 bits supported for now 2^Nbits - 1
-    height, width = size(image)
-    k = 1
-    @inbounds for j in 1:height
-        @inbounds for i in 1:width
-            val = Int(rawImage[k])
-            image[j, i] = val < 0 ? val + maxVal : val
-            k += 1
-        end
-    end
-    return image
-end
-
-@inline function rawGrey2image(rawImage, width, height)
-    image = zeros(Int, height, width)
-    return rawGrey2image!(image, rawImage)
 end

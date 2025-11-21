@@ -1,5 +1,5 @@
 # Launch PANGU in server mode
-@inline function launchPangu(args::String="", port::Int=10363; rmlogs=true)
+@inline function launchServer(args::String="", port::Int=10363; rmlogs=true)
     # Check if setup has been done or not
     if isnothing(panguDir())
         @error "PANGU has not been setup properly. Please launch 'setupPangu(panguDir=..., javasdkDir=...)' and retry"
@@ -23,7 +23,7 @@
 
     # Execute PANGU
     cmdStr = "$(panguDir())bin/viewer -server -port $port $args"
-    @show cmdStr
+    println("Launching PANGU server: $cmdStr")
     run(`$(split(cmdStr))`, wait=false)
 end
 

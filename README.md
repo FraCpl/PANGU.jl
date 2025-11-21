@@ -10,7 +10,7 @@ After loading the package for the very first time, setup the required directorie
 
 ```julia
 using PANGU
-setupPangu(panguDir="your/path/to/Pangu/v8.01/", javasdkDir="your/path/to/JavaSDK/jdk-25.0.1/")
+PANGU.setup(panguDir="your/path/to/Pangu/v8.01/", javasdkDir="your/path/to/JavaSDK/jdk-25.0.1/")
 ```
 
 The following commands can be run to obtain a sample image:
@@ -18,8 +18,8 @@ The following commands can be run to obtain a sample image:
 using PANGU
 using Images
 
-launchPangu("-image_format_tcp raw -grey_tcp")
-client = makeConnection()
+PANGU.launchServer("-image_format_tcp raw -grey_tcp")
+client = PANGU.makeConnection()
 rawImage = PANGU.getViewpointByQuaternion(client, 0.0, 0.0, 1000.0, 0.0, 1.0, 0.0, 0.0)
 image = PANGU.rawGrey2image(rawImage, 512, 512)
 colorview(Gray, image ./ 255)

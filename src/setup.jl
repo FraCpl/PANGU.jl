@@ -8,8 +8,8 @@ end
 
 # Only to be run once and for all
 # Example:
-# setupPangu(panguDir="C:/fc/software/Pangu/v8.01/", javasdkDir="C:/fc/software/JavaSDK/jdk-25.0.1/")
-function setupPangu(; panguDir=nothing, javasdkDir=nothing)
+# PANGU.setup(panguDir="C:/fc/software/Pangu/v8.01/", javasdkDir="C:/fc/software/JavaSDK/jdk-25.0.1/")
+function setup(; panguDir=nothing, javasdkDir=nothing)
     if panguDir !== nothing
         panguDir = replace(normpath(panguDir), '\\' => '/')
         if panguDir[end] != '/'

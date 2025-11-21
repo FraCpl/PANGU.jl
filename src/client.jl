@@ -23,12 +23,12 @@ function PanguClient(cam; port::Int=10363)
     return PanguClient(makeConnection(port), cam)
 end
 
-@inline function launchPangu(cam::PanguCamera, args::String=""; port::Int=10363)
-    launchPangu([cam], args; port=port)
+@inline function launchServer(cam::PanguCamera, args::String=""; port::Int=10363)
+    launchServer([cam], args; port=port)
     return
 end
 
-function launchPangu(cam::Vector{PanguCamera}, args::String=""; port::Int=10363)
+function launchServer(cam::Vector{PanguCamera}, args::String=""; port::Int=10363)
     # Build args string
     argsStr = "-image_format_tcp raw -grey_tcp -use_camera_model -use_detector_size $(args) -cfov 0 10 1 0 0"
     for i in eachindex(cam)
@@ -36,7 +36,7 @@ function launchPangu(cam::Vector{PanguCamera}, args::String=""; port::Int=10363)
     end
 
     # Execute PANGU
-    launchPangu(argsStr, port)
+    launchServer(argsStr, port)
     return
 end
 

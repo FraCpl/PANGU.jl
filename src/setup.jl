@@ -23,6 +23,6 @@ function setup(; panguDir=nothing, javasdkDir=nothing)
         # Can be downloaded from: https://www.oracle.com/java/technologies/downloads/, x64 Compressed Archive for Windows
         @set_preferences!("javasdkDir" => replace(normpath(javasdkDir), '\\' => '/'))
     else
-        @error "A valid Java SDK directory shall be provided. The SDK can be downloaded as 'x64 Compressed Archive for Windows' here: https://www.oracle.com/java/technologies/downloads/"
+        @error "A valid Java SDK directory shall be provided. The SDK can be downloaded as 'x64 Compressed Archive for Windows' from: https://www.oracle.com/java/technologies/downloads/"
     end
 end

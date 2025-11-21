@@ -8,7 +8,7 @@
     k = 1
     @inbounds for j in 1:height
         @inbounds for i in 1:width
-            val = Int(rawImage[k])
+            val = rawImage[k]
             image[j, i] = val < 0 ? val + maxVal : val
             k += 1
         end

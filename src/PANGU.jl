@@ -12,6 +12,6 @@ include("api.jl")
 # Image conversion tools
 include("image.jl")
 
-const campxn::String = "'"*replace(dirname(pathof(@__MODULE__)), "\\" => "/")*"/camera.pxn'"
+const campxn::String = "'"*replace(dirname(pathof(@__MODULE__)), "\\" => "/")*"/cam.pxn'"
 
 end

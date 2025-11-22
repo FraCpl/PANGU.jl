@@ -20,7 +20,7 @@ PANGU.launchServer("
 
 client = PANGU.makeConnection()
 
-idCam = 1
+idCam = 1       # 1 or 2
 PANGU.setObjectPositionAttitude(client, idCam + 2, 0.0, 0.0, 1000.0, 0.0, 1.0, 0.0, 0.0)
 PANGU.selectCamera(client, idCam + 2)
 rawImage = PANGU.getImage(client)

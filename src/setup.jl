@@ -7,9 +7,7 @@ function javasdkDir()
 end
 
 # Only to be run once and for all
-# Example:
-# PANGU.setup(panguDir="C:/fc/software/Pangu/v8.01/", javasdkDir="C:/fc/software/JavaSDK/jdk-25.0.1/")
-function setup(; panguDir=nothing, javasdkDir=nothing)
+function setup(; panguDir=nothing, jdkDir=nothing)
     if panguDir !== nothing
         panguDir = replace(normpath(panguDir), '\\' => '/')
         if panguDir[end] != '/'
@@ -19,9 +17,9 @@ function setup(; panguDir=nothing, javasdkDir=nothing)
     else
         @error "A valid PANGU directory shall be provided."
     end
-    if javasdkDir !== nothing
+    if jdkDir !== nothing
         # Can be downloaded from: https://www.oracle.com/java/technologies/downloads/, x64 Compressed Archive for Windows
-        @set_preferences!("javasdkDir" => replace(normpath(javasdkDir), '\\' => '/'))
+        @set_preferences!("javasdkDir" => replace(normpath(jdkDir), '\\' => '/'))
     else
         @error "A valid Java SDK directory shall be provided. The SDK can be downloaded as 'x64 Compressed Archive for Windows' from: https://www.oracle.com/java/technologies/downloads/"
     end

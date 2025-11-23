@@ -1,6 +1,6 @@
 name = "PANGU"
 uuid = "80b6f24f-16b4-4ee0-b068-2d29409decd5"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["F. Capolupo"]
 
 [deps]

@@ -24,5 +24,5 @@ idCam = 1       # 1 or 2
 PANGU.setObjectPositionAttitude(client, idCam + 2, 0.0, 0.0, 1000.0, 0.0, 1.0, 0.0, 0.0)
 PANGU.selectCamera(client, idCam + 2)
 rawImage = PANGU.getImage(client)
-image = PANGU.rawGrey2image(rawImage, sz[idCam], sz[idCam])
-colorview(Gray, image ./ typemax(eltype(image)))
+image = PANGU.rawGrey2imageD(rawImage, sz[idCam], sz[idCam])
+colorview(Gray, image)

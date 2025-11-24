@@ -14,13 +14,14 @@ function setup(; panguDir=nothing, jdkDir=nothing)
             panguDir = panguDir*"/"
         end
         @set_preferences!("panguDir" => panguDir)
-    else
+    elseif isnothing(panguDir())
         @error "A valid PANGU directory shall be provided."
     end
+
     if jdkDir !== nothing
         # Can be downloaded from: https://www.oracle.com/java/technologies/downloads/, x64 Compressed Archive for Windows
         @set_preferences!("javasdkDir" => replace(normpath(jdkDir), '\\' => '/'))
-    else
+    elseif isnothing(javasdkDir())
         @error "A valid Java SDK directory shall be provided. The SDK can be downloaded as 'x64 Compressed Archive for Windows' from: https://www.oracle.com/java/technologies/downloads/"
     end
 end

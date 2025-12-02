@@ -1,5 +1,5 @@
 # Launch PANGU in server mode
-@inline function launchServer(args::String = "", port::Int = 10363; rmlogs = true)
+@inline function launchServer(args::String="", port::Int=10363; rmlogs=true)
     # Check if setup has been done or not
     if isnothing(panguDir()) || isnothing(javasdkDir())
         @error "PANGU has not been setup properly. Please launch 'setupPangu(panguDir=..., javasdkDir=...)' and retry"
@@ -15,8 +15,8 @@
     # Remove old logging files
     if rmlogs
         try
-            rm("PANGU.log", force = true)
-            rm("_PERF_RESULTS.txt", force = true)
+            rm("PANGU.log", force=true)
+            rm("_PERF_RESULTS.txt", force=true)
         catch
         end
     end
@@ -24,10 +24,10 @@
     # Execute PANGU
     cmdStr = "$(panguDir())bin/viewer -server -port $port $args"
     println("Launching PANGU server: $cmdStr")
-    run(`$(Base.shell_split(cmdStr))`, wait = false)
+    run(`$(Base.shell_split(cmdStr))`, wait=false)
 end
 
-function makeConnection(port::Int = 10363)
+function makeConnection(port::Int=10363)
     # Initialize the JVM
     ENV["JAVA_HOME"] = javasdkDir()
 
@@ -40,19 +40,11 @@ function makeConnection(port::Int = 10363)
     end
 
     # Import the Java classes
-    ConnectionFactory =
-        @jimport uk.ac.dundee.spacetech.pangu.ClientLibrary.ConnectionFactory
+    ConnectionFactory = @jimport uk.ac.dundee.spacetech.pangu.ClientLibrary.ConnectionFactory
     ClientConnection = @jimport uk.ac.dundee.spacetech.pangu.ClientLibrary.ClientConnection
 
     # Connect client to PANGU server
-    return jcall(
-        ConnectionFactory,
-        "makeConnection",
-        ClientConnection,
-        (JString, jint),
-        "localhost",
-        port,
-    )
+    return jcall(ConnectionFactory, "makeConnection", ClientConnection, (JString, jint), "localhost", port)
 end
 
 
@@ -81,99 +73,29 @@ end
 end
 
 @inline function getViewpointByQuaternion(client, x, y, z, q0, qx, qy, qz)
-    return jcall(
-        client,
-        "getViewpointByQuaternionD",
-        Vector{jbyte},
-        (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble),
-        x,
-        y,
-        z,
-        q0,
-        qx,
-        qy,
-        qz,
-    )
+    return jcall(client, "getViewpointByQuaternionD", Vector{jbyte}, (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), x, y, z, q0, qx, qy, qz)
 end
 
 @inline function getViewpointByQuaternionD(client, x, y, z, q0, qx, qy, qz)
-    return jcall(
-        client,
-        "getViewpointByQuaternionD",
-        Vector{jbyte},
-        (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble),
-        x,
-        y,
-        z,
-        q0,
-        qx,
-        qy,
-        qz,
-    )
+    return jcall(client, "getViewpointByQuaternionD", Vector{jbyte}, (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), x, y, z, q0, qx, qy, qz)
 end
 
 @inline function setViewpointByQuaternion(client, pos, q)
     x, y, z = pos
     q0, qx, qy, qz = q
-    return jcall(
-        client,
-        "setViewpointByQuaternion",
-        Cvoid,
-        (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble),
-        x,
-        y,
-        z,
-        q0,
-        qx,
-        qy,
-        qz,
-    )
+    return jcall(client, "setViewpointByQuaternion", Cvoid, (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), x, y, z, q0, qx, qy, qz)
 end
 
 @inline function setViewpointByQuaternion(client, x, y, z, q0, qx, qy, qz)
-    return jcall(
-        client,
-        "setViewpointByQuaternion",
-        Cvoid,
-        (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble),
-        x,
-        y,
-        z,
-        q0,
-        qx,
-        qy,
-        qz,
-    )
+    return jcall(client, "setViewpointByQuaternion", Cvoid, (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), x, y, z, q0, qx, qy, qz)
 end
 
 @inline function getViewpointByDegreesD(client, x, y, z, yaw, pitch, roll)
-    return jcall(
-        client,
-        "getViewpointByDegreesD",
-        Vector{jbyte},
-        (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble),
-        x,
-        y,
-        z,
-        yaw,
-        pitch,
-        roll,
-    )
+    return jcall(client, "getViewpointByDegreesD", Vector{jbyte}, (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), x, y, z, yaw, pitch, roll)
 end
 
 @inline function getViewpointByRadians(client, x, y, z, yaw, pitch, roll)
-    return jcall(
-        client,
-        "getViewpointByRadians",
-        Vector{jbyte},
-        (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble),
-        x,
-        y,
-        z,
-        yaw,
-        pitch,
-        roll,
-    )
+    return jcall(client, "getViewpointByRadians", Vector{jbyte}, (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), x, y, z, yaw, pitch, roll)
 end
 
 @inline function getViewpointByFrame(client, oid, fid)
@@ -181,64 +103,19 @@ end
 end
 
 @inline function setViewpointByQuaternionD(client, x, y, z, q0, qx, qy, qz)
-    return jcall(
-        client,
-        "setViewpointByQuaternionD",
-        Cvoid,
-        (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble),
-        x,
-        y,
-        z,
-        q0,
-        qx,
-        qy,
-        qz,
-    )
+    return jcall(client, "setViewpointByQuaternionD", Cvoid, (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), x, y, z, q0, qx, qy, qz)
 end
 
 @inline function setViewpointByDegrees(client, x, y, z, yaw, pitch, roll)
-    return jcall(
-        client,
-        "setViewpointByDegrees",
-        Cvoid,
-        (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble),
-        x,
-        y,
-        z,
-        yaw,
-        pitch,
-        roll,
-    )
+    return jcall(client, "setViewpointByDegrees", Cvoid, (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), x, y, z, yaw, pitch, roll)
 end
 
 @inline function setViewpointByDegreesD(client, x, y, z, yaw, pitch, roll)
-    return jcall(
-        client,
-        "setViewpointByDegreesD",
-        Cvoid,
-        (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble),
-        x,
-        y,
-        z,
-        yaw,
-        pitch,
-        roll,
-    )
+    return jcall(client, "setViewpointByDegreesD", Cvoid, (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), x, y, z, yaw, pitch, roll)
 end
 
 @inline function setViewpointByRadians(client, x, y, z, yaw, pitch, roll)
-    return jcall(
-        client,
-        "setViewpointByRadians",
-        Cvoid,
-        (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble),
-        x,
-        y,
-        z,
-        yaw,
-        pitch,
-        roll,
-    )
+    return jcall(client, "setViewpointByRadians", Cvoid, (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), x, y, z, yaw, pitch, roll)
 end
 
 @inline function getImage(client)
@@ -274,16 +151,7 @@ end
 end
 
 @inline function setIrradiance(client, band, r, g, b)
-    return jcall(
-        client,
-        "setIrradiance",
-        Cvoid,
-        (jlong, jdouble, jdouble, jdouble),
-        band,
-        r,
-        g,
-        b,
-    )
+    return jcall(client, "setIrradiance", Cvoid, (jlong, jdouble, jdouble, jdouble), band, r, g, b)
 end
 
 @inline function getIrradiance(client, band)
@@ -295,16 +163,7 @@ end
 end
 
 @inline function setDetectorBias(client, cid, r, g, b)
-    return jcall(
-        client,
-        "setDetectorBias",
-        Cvoid,
-        (jlong, jdouble, jdouble, jdouble),
-        cid,
-        r,
-        g,
-        b,
-    )
+    return jcall(client, "setDetectorBias", Cvoid, (jlong, jdouble, jdouble, jdouble), cid, r, g, b)
 end
 
 @inline function getDetectorGain(client, cid)
@@ -312,16 +171,7 @@ end
 end
 
 @inline function setDetectorGain(client, cid, r, g, b)
-    return jcall(
-        client,
-        "setDetectorGain",
-        Cvoid,
-        (jlong, jdouble, jdouble, jdouble),
-        cid,
-        r,
-        g,
-        b,
-    )
+    return jcall(client, "setDetectorGain", Cvoid, (jlong, jdouble, jdouble, jdouble), cid, r, g, b)
 end
 
 @inline function getDetectorQE(client, cid)
@@ -329,16 +179,7 @@ end
 end
 
 @inline function setDetectorQE(client, cid, r, g, b)
-    return jcall(
-        client,
-        "setDetectorQE",
-        Cvoid,
-        (jlong, jdouble, jdouble, jdouble),
-        cid,
-        r,
-        g,
-        b,
-    )
+    return jcall(client, "setDetectorQE", Cvoid, (jlong, jdouble, jdouble, jdouble), cid, r, g, b)
 end
 
 @inline function setCameraBand(client, cid, band)
@@ -346,16 +187,7 @@ end
 end
 
 @inline function setBandwidth(client, band, r, g, b)
-    return jcall(
-        client,
-        "setBandwidth",
-        Cvoid,
-        (jlong, jdouble, jdouble, jdouble),
-        band,
-        r,
-        g,
-        b,
-    )
+    return jcall(client, "setBandwidth", Cvoid, (jlong, jdouble, jdouble, jdouble), band, r, g, b)
 end
 
 @inline function getBandwidth(client, band)
@@ -391,16 +223,7 @@ end
 end
 
 @inline function setDetectorWellCapacity(client, cid, r, g, b)
-    return jcall(
-        client,
-        "setDetectorWellCapacity",
-        Cvoid,
-        (jlong, jdouble, jdouble, jdouble),
-        cid,
-        r,
-        g,
-        b,
-    )
+    return jcall(client, "setDetectorWellCapacity", Cvoid, (jlong, jdouble, jdouble, jdouble), cid, r, g, b)
 end
 
 @inline function getDetectorWellCapacity(client, cid)
@@ -416,16 +239,7 @@ end
 end
 
 @inline function setDetectorReadoutRMS(client, cid, r, g, b)
-    return jcall(
-        client,
-        "setDetectorReadoutRMS",
-        Cvoid,
-        (jlong, jdouble, jdouble, jdouble),
-        cid,
-        r,
-        g,
-        b,
-    )
+    return jcall(client, "setDetectorReadoutRMS", Cvoid, (jlong, jdouble, jdouble, jdouble), cid, r, g, b)
 end
 
 @inline function getDetectorReadoutRMS(client, cid)
@@ -448,73 +262,9 @@ end
     return jcall(client, "setFocusDistance", Cvoid, (jlong, jdouble), cid, d)
 end
 
-@inline function setCameraMotion(
-    client,
-    cid,
-    vx,
-    vy,
-    vz,
-    rx,
-    ry,
-    rz,
-    ax,
-    ay,
-    az,
-    sx,
-    sy,
-    sz,
-    jx,
-    jy,
-    jz,
-    tx,
-    ty,
-    tz,
-)
-    return jcall(
-        client,
-        "setCameraMotion",
-        Cvoid,
-        (
-            jlong,
-            jdouble,
-            jdouble,
-            jdouble,
-            jdouble,
-            jdouble,
-            jdouble,
-            jdouble,
-            jdouble,
-            jdouble,
-            jdouble,
-            jdouble,
-            jdouble,
-            jdouble,
-            jdouble,
-            jdouble,
-            jdouble,
-            jdouble,
-            jdouble,
-        ),
-        cid,
-        vx,
-        vy,
-        vz,
-        rx,
-        ry,
-        rz,
-        ax,
-        ay,
-        az,
-        sx,
-        sy,
-        sz,
-        jx,
-        jy,
-        jz,
-        tx,
-        ty,
-        tz,
-    )
+@inline function setCameraMotion(client, cid, vx, vy, vz, rx, ry, rz, ax, ay, az, sx, sy, sz, jx, jy, jz, tx, ty, tz)
+    return jcall(client, "setCameraMotion", Cvoid, (jlong, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble),
+        cid, vx, vy, vz, rx, ry, rz, ax, ay, az, sx, sy, sz, jx, jy, jz, tx, ty, tz)
 end
 
 @inline function setStarMagnitudes(client, m)
@@ -522,65 +272,23 @@ end
 end
 
 @inline function setAtmosphereMode(client, smode, gmode, amode)
-    return jcall(
-        client,
-        "setAtmosphereMode",
-        Cvoid,
-        (jlong, jlong, jlong),
-        smode,
-        gmode,
-        amode,
-    )
+    return jcall(client, "setAtmosphereMode", Cvoid, (jlong, jlong, jlong), smode, gmode, amode)
 end
 
 @inline function setStarQuaternion(client, q0, qx, qy, qz)
-    return jcall(
-        client,
-        "setAtmosphereMode",
-        Cvoid,
-        (jdouble, jdouble, jdouble, jdouble),
-        q0,
-        qx,
-        qy,
-        qz,
-    )
+    return jcall(client, "setAtmosphereMode", Cvoid, (jdouble, jdouble, jdouble, jdouble), q0, qx, qy, qz)
 end
 
 @inline function setWavelength(client, band, r, g, b)
-    return jcall(
-        client,
-        "setWavelength",
-        Cvoid,
-        (jlong, jdouble, jdouble, jdouble),
-        band,
-        r,
-        g,
-        b,
-    )
+    return jcall(client, "setWavelength", Cvoid, (jlong, jdouble, jdouble, jdouble), band, r, g, b)
 end
 
 @inline function setSecondaryByRadians(client, r, azi, ele)
-    return jcall(
-        client,
-        "setSecondaryByRadians",
-        Cvoid,
-        (jdouble, jdouble, jdouble),
-        r,
-        azi,
-        ele,
-    )
+    return jcall(client, "setSecondaryByRadians", Cvoid, (jdouble, jdouble, jdouble), r, azi, ele)
 end
 
 @inline function setSecondaryByDegrees(client, r, azi, ele)
-    return jcall(
-        client,
-        "setSecondaryByDegrees",
-        Cvoid,
-        (jdouble, jdouble, jdouble),
-        r,
-        azi,
-        ele,
-    )
+    return jcall(client, "setSecondaryByDegrees", Cvoid, (jdouble, jdouble, jdouble), r, azi, ele)
 end
 
 @inline function setGlobalFogMode(client, type)
@@ -588,54 +296,17 @@ end
 end
 
 @inline function setAtmosphereTau(client, mie_r, mie_g, mie_b, ray_r, ray_g, ray_b)
-    return jcall(
-        client,
-        "setAtmosphereTau",
-        Cvoid,
-        (jfloat, jfloat, jfloat, jfloat, jfloat, jfloat),
-        mie_r,
-        mie_g,
-        mie_b,
-        ray_r,
-        ray_g,
-        ray_b,
-    )
+    return jcall(client, "setAtmosphereTau", Cvoid, (jfloat, jfloat, jfloat, jfloat, jfloat, jfloat), mie_r, mie_g, mie_b, ray_r, ray_g, ray_b)
 end
 
 @inline function setObjectPositionAttitude(client, n, x, y, z, q0, qx, qy, qz)
-    return jcall(
-        client,
-        "setObjectPositionAttitude",
-        Cvoid,
-        (jlong, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble),
-        n,
-        x,
-        y,
-        z,
-        q0,
-        qx,
-        qy,
-        qz,
-    )
+    return jcall(client, "setObjectPositionAttitude", Cvoid, (jlong, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), n, x, y, z, q0, qx, qy, qz)
 end
 
 @inline function setObjectPositionAttitude(client, n, pos, q)
     x, y, z = pos
     q0, qx, qy, qz = q
-    return jcall(
-        client,
-        "setObjectPositionAttitude",
-        Cvoid,
-        (jlong, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble),
-        n,
-        x,
-        y,
-        z,
-        q0,
-        qx,
-        qy,
-        qz,
-    )
+    return setObjectPositionAttitude(client, n, x, y, z, q0, qx, qy, qz)
 end
 
 @inline function setObjectView(client, oid, type)
@@ -647,15 +318,7 @@ end
 end
 
 @inline function bindLightToCamera(client, res, cid, ena)
-    return jcall(
-        client,
-        "bindLightToCamera",
-        Cvoid,
-        (jlong, jlong, jboolean),
-        res,
-        cid,
-        ena,
-    )
+    return jcall(client, "bindLightToCamera", Cvoid, (jlong, jlong, jboolean), res, cid, ena)
 end
 
 @inline function setEmissionScale(client, r, g, b)
@@ -671,61 +334,19 @@ end
 end
 
 @inline function setSurfaceView(client, type, texture, detail)
-    return jcall(
-        client,
-        "setSurfaceView",
-        Cvoid,
-        (jint, jboolean, jboolean),
-        type,
-        texture,
-        detail,
-    )
+    return jcall(client, "setSurfaceView", Cvoid, (jint, jboolean, jboolean), type, texture, detail)
 end
 
 @inline function setLightPositionDirection(client, res, px, py, pz, dx, dy, dz)
-    return jcall(
-        client,
-        "setLightPositionDirection",
-        Cvoid,
-        (jlong, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble),
-        0,
-        px,
-        py,
-        pz,
-        dx,
-        dy,
-        dz,
-    )
+    return jcall(client, "setLightPositionDirection", Cvoid, (jlong, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), 0, px, py, pz, dx, dy, dz)
 end
 
 @inline function configureLightByRadians(client, res, r, g, b, h, e)
-    return jcall(
-        client,
-        "configureLightByRadians",
-        Cvoid,
-        (jlong, jfloat, jfloat, jfloat, jfloat, jfloat),
-        0,
-        r,
-        g,
-        b,
-        h,
-        e,
-    )
+    return jcall(client, "configureLightByRadians", Cvoid, (jlong, jfloat, jfloat, jfloat, jfloat, jfloat), 0, r, g, b, h, e)
 end
 
 @inline function configureLightByDegrees(client, res, r, g, b, h, e)
-    return jcall(
-        client,
-        "configureLightByDegrees",
-        Cvoid,
-        (jlong, jfloat, jfloat, jfloat, jfloat, jfloat),
-        0,
-        r,
-        g,
-        b,
-        h,
-        e,
-    )
+    return jcall(client, "configureLightByDegrees", Cvoid, (jlong, jfloat, jfloat, jfloat, jfloat, jfloat), 0, r, g, b, h, e)
 end
 
 @inline function getEmissionScale(client)

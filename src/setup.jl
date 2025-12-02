@@ -7,7 +7,7 @@ function javasdkDir()
 end
 
 # Only to be run once and for all
-function setup(; panguDir=nothing, jdkDir=nothing)
+function setup(; panguDir = nothing, jdkDir = nothing)
     if panguDir !== nothing
         panguDir = replace(normpath(panguDir), '\\' => '/')
         if panguDir[end] != '/'

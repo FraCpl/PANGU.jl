@@ -10,7 +10,7 @@ function pos2azel(pos)
     return atan(y, x), asin(z/r)
 end
 
-res = runATLAS(plotResults = :none);
+res = runATLAS(; plotResults=:none);
 
 data, sol, ~, ~ = res;
 sol = sol[1];
@@ -25,18 +25,18 @@ R = 1737.4e3        # Planet radius
 
 fig = Figure();
 display(fig)
-ax = LScene(fig[1, 1]; show_axis = false)
+ax = LScene(fig[1, 1]; show_axis=false)
 plotMoon!(ax, R)
 lines!(ax, getindex.(pos_M, 1), getindex.(pos_M, 2), getindex.(pos_M, 3))
 
-ax2 = GLMakie.Axis(fig[1, 2], aspect = DataAspect())#, limits=(-180, 180, -90, 90), xlabel="Azimuth [deg]", ylabel="Elevation [deg]")
+ax2 = GLMakie.Axis(fig[1, 2]; aspect=DataAspect())#, limits=(-180, 180, -90, 90), xlabel="Azimuth [deg]", ylabel="Elevation [deg]")
 xy = stereographicSouthProj.(lon, lat)
 lines!(ax2, xy)
 
 θ = range(0, 2π, 100)
 ct = cos.(θ);
 st = sin.(θ)
-for i = 1:500:lastindex(pos_M)
+for i in 1:500:lastindex(pos_M)
     r = norm(pos_M[i])
     if r < R
         ;

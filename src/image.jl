@@ -6,8 +6,8 @@
         maxVal = typemax(U)
         height, width = size(image)
         k = 1
-        @inbounds for j = 1:height
-            @inbounds for i = 1:width
+        @inbounds for j in 1:height
+            @inbounds for i in 1:width
                 val = rawImage[k]
                 image[j, i] = val < 0 ? val + maxVal : val
                 k += 1
@@ -24,8 +24,8 @@ end
         invMaxVal = 1.0/typemax(unsigned(T))
         height, width = size(image)
         k = 1
-        @inbounds for j = 1:height
-            @inbounds for i = 1:width
+        @inbounds for j in 1:height
+            @inbounds for i in 1:width
                 val = rawImage[k]
                 image[j, i] = val < 0 ? val*invMaxVal + 1.0 : val*invMaxVal
                 k += 1
@@ -40,11 +40,7 @@ end
     return rawGrey2image!(image, rawImage)
 end
 
-@inline function rawGrey2imageD(
-    rawImage::AbstractVector{T},
-    width::Int,
-    height::Int,
-) where {T}
+@inline function rawGrey2imageD(rawImage::AbstractVector{T}, width::Int, height::Int) where {T}
     image = zeros(height, width)
     return rawGrey2image!(image, rawImage)
 end
@@ -61,9 +57,9 @@ const rawGray2image! = rawGrey2image!
         maxVal = typemax(U)
         height, width = size(image)
         k = 1
-        @inbounds for j = 1:height
-            @inbounds for i = 1:width
-                @inbounds for p = 1:3
+        @inbounds for j in 1:height
+            @inbounds for i in 1:width
+                @inbounds for p in 1:3
                     val = rawImage[k]
                     image[j, i, p] = val < 0 ? val + maxVal : val
                     k += 1
@@ -74,19 +70,16 @@ const rawGray2image! = rawGrey2image!
     return image
 end
 
-@inline function rawRGB2image!(
-    image::Array{Float64,3},
-    rawImage::AbstractVector{T},
-) where {T}
+@inline function rawRGB2image!(image::Array{Float64,3}, rawImage::AbstractVector{T}) where {T}
     if isempty(rawImage)
         image .= 0
     else
         invMaxVal = 1.0/typemax(unsigned(T))
         height, width = size(image)
         k = 1
-        @inbounds for j = 1:height
-            @inbounds for i = 1:width
-                @inbounds for p = 1:3
+        @inbounds for j in 1:height
+            @inbounds for i in 1:width
+                @inbounds for p in 1:3
                     val = rawImage[k]
                     image[j, i, p] = val < 0 ? val*invMaxVal + 1.0 : val*invMaxVal
                     k += 1
@@ -97,20 +90,12 @@ end
     return image
 end
 
-@inline function rawRGB2image(
-    rawImage::AbstractVector{T},
-    width::Int,
-    height::Int,
-) where {T}
+@inline function rawRGB2image(rawImage::AbstractVector{T}, width::Int, height::Int) where {T}
     image = zeros(unsigned(T), height, width, 3)
     return rawRGB2image!(image, rawImage)
 end
 
-@inline function rawRGB2imageD(
-    rawImage::AbstractVector{T},
-    width::Int,
-    height::Int,
-) where {T}
+@inline function rawRGB2imageD(rawImage::AbstractVector{T}, width::Int, height::Int) where {T}
     image = zeros(height, width, 3)
     return rawRGB2image!(image, rawImage)
 end

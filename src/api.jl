@@ -3,13 +3,13 @@
     # Check if setup has been done or not
     if isnothing(panguDir()) || isnothing(javasdkDir())
         @error "PANGU has not been setup properly. Please launch 'setupPangu(panguDir=..., javasdkDir=...)' and retry"
-        return
+        return nothing
     end
 
     # Check if PANGU is already running
     if occursin("viewer.exe", read(`tasklist /FI "IMAGENAME eq viewer.exe"`, String))
         @warn "PANGU is already running"
-        return
+        return nothing
     end
 
     # Remove old logging files
@@ -47,7 +47,6 @@ function makeConnection(port::Int=10363)
     return jcall(ConnectionFactory, "makeConnection", ClientConnection, (JString, jint), "localhost", port)
 end
 
-
 @inline function selectCamera(client, cid)
     return jcall(client, "selectCamera", Cvoid, (JavaCall.jlong,), cid)
 end
@@ -73,11 +72,15 @@ end
 end
 
 @inline function getViewpointByQuaternion(client, x, y, z, q0, qx, qy, qz)
-    return jcall(client, "getViewpointByQuaternionD", Vector{jbyte}, (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), x, y, z, q0, qx, qy, qz)
+    return jcall(
+        client, "getViewpointByQuaternionD", Vector{jbyte}, (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), x, y, z, q0, qx, qy, qz
+    )
 end
 
 @inline function getViewpointByQuaternionD(client, x, y, z, q0, qx, qy, qz)
-    return jcall(client, "getViewpointByQuaternionD", Vector{jbyte}, (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), x, y, z, q0, qx, qy, qz)
+    return jcall(
+        client, "getViewpointByQuaternionD", Vector{jbyte}, (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), x, y, z, q0, qx, qy, qz
+    )
 end
 
 @inline function setViewpointByQuaternion(client, pos, q)
@@ -91,11 +94,15 @@ end
 end
 
 @inline function getViewpointByDegreesD(client, x, y, z, yaw, pitch, roll)
-    return jcall(client, "getViewpointByDegreesD", Vector{jbyte}, (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), x, y, z, yaw, pitch, roll)
+    return jcall(
+        client, "getViewpointByDegreesD", Vector{jbyte}, (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), x, y, z, yaw, pitch, roll
+    )
 end
 
 @inline function getViewpointByRadians(client, x, y, z, yaw, pitch, roll)
-    return jcall(client, "getViewpointByRadians", Vector{jbyte}, (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), x, y, z, yaw, pitch, roll)
+    return jcall(
+        client, "getViewpointByRadians", Vector{jbyte}, (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), x, y, z, yaw, pitch, roll
+    )
 end
 
 @inline function getViewpointByFrame(client, oid, fid)
@@ -263,8 +270,51 @@ end
 end
 
 @inline function setCameraMotion(client, cid, vx, vy, vz, rx, ry, rz, ax, ay, az, sx, sy, sz, jx, jy, jz, tx, ty, tz)
-    return jcall(client, "setCameraMotion", Cvoid, (jlong, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble),
-        cid, vx, vy, vz, rx, ry, rz, ax, ay, az, sx, sy, sz, jx, jy, jz, tx, ty, tz)
+    return jcall(
+        client,
+        "setCameraMotion",
+        Cvoid,
+        (
+            jlong,
+            jdouble,
+            jdouble,
+            jdouble,
+            jdouble,
+            jdouble,
+            jdouble,
+            jdouble,
+            jdouble,
+            jdouble,
+            jdouble,
+            jdouble,
+            jdouble,
+            jdouble,
+            jdouble,
+            jdouble,
+            jdouble,
+            jdouble,
+            jdouble,
+        ),
+        cid,
+        vx,
+        vy,
+        vz,
+        rx,
+        ry,
+        rz,
+        ax,
+        ay,
+        az,
+        sx,
+        sy,
+        sz,
+        jx,
+        jy,
+        jz,
+        tx,
+        ty,
+        tz,
+    )
 end
 
 @inline function setStarMagnitudes(client, m)
@@ -300,7 +350,9 @@ end
 end
 
 @inline function setObjectPositionAttitude(client, n, x, y, z, q0, qx, qy, qz)
-    return jcall(client, "setObjectPositionAttitude", Cvoid, (jlong, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), n, x, y, z, q0, qx, qy, qz)
+    return jcall(
+        client, "setObjectPositionAttitude", Cvoid, (jlong, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), n, x, y, z, q0, qx, qy, qz
+    )
 end
 
 @inline function setObjectPositionAttitude(client, n, pos, q)
@@ -374,10 +426,9 @@ end
     return jcall(client, "stop", Cvoid, ())
 end
 
-
 @inline function printMethods(client)
     println.(JavaCall.listmethods(client))
-    return
+    return nothing
 end
 
 # void expect(int)

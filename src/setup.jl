@@ -1,3 +1,5 @@
+const campxn::String = "'"*replace(dirname(pathof(@__MODULE__)), "\\" => "/")*"/cam.pxn'"
+
 function panguDir()
     @load_preference("panguDir", nothing)
 end
@@ -7,7 +9,7 @@ function javasdkDir()
 end
 
 # Only to be run once and for all
-function setup(; panguDir = nothing, jdkDir = nothing)
+function setup(; panguDir=nothing, jdkDir=nothing)
     if panguDir !== nothing
         panguDir = replace(normpath(panguDir), '\\' => '/')
         if panguDir[end] != '/'

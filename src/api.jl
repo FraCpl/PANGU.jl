@@ -25,6 +25,7 @@
     cmdStr = "$(panguDir())bin/viewer -server -port $port $args"
     println("Launching PANGU server: $cmdStr")
     run(`$(Base.shell_split(cmdStr))`, wait=false)
+    return nothing
 end
 
 function makeConnection(port::Int=10363)

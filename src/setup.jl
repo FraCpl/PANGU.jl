@@ -26,4 +26,6 @@ function setup(; panguDir=nothing, jdkDir=nothing)
     elseif isnothing(javasdkDir())
         @error "A valid Java SDK directory shall be provided. The SDK can be downloaded as 'x64 Compressed Archive for Windows' from: https://www.oracle.com/java/technologies/downloads/"
     end
+
+    return nothing
 end

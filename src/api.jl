@@ -72,16 +72,28 @@ end
     return jcall(client, "getViewpointByCamera", Vector{jbyte}, (jlong,), cid)
 end
 
+@inline function getViewpointByQuaternion(client, pose)
+    x, y, z, q0, qx, qy, qz = pose
+    return jcall(client, "getViewpointByQuaternionD", Vector{jbyte}, (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), x, y, z, q0, qx, qy, qz)
+end
+
+@inline function getViewpointByQuaternion(client, pos, q)
+    x, y, z = pos
+    q0, qx, qy, qz = q
+    return jcall(client, "getViewpointByQuaternionD", Vector{jbyte}, (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), x, y, z, q0, qx, qy, qz)
+end
+
 @inline function getViewpointByQuaternion(client, x, y, z, q0, qx, qy, qz)
-    return jcall(
-        client, "getViewpointByQuaternionD", Vector{jbyte}, (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), x, y, z, q0, qx, qy, qz
-    )
+    return jcall(client, "getViewpointByQuaternionD", Vector{jbyte}, (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), x, y, z, q0, qx, qy, qz)
 end
 
 @inline function getViewpointByQuaternionD(client, x, y, z, q0, qx, qy, qz)
-    return jcall(
-        client, "getViewpointByQuaternionD", Vector{jbyte}, (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), x, y, z, q0, qx, qy, qz
-    )
+    return jcall(client, "getViewpointByQuaternionD", Vector{jbyte}, (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), x, y, z, q0, qx, qy, qz)
+end
+
+@inline function setViewpointByQuaternion(client, pose)
+    x, y, z, q0, qx, qy, qz = pose
+    return jcall(client, "setViewpointByQuaternion", Cvoid, (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), x, y, z, q0, qx, qy, qz)
 end
 
 @inline function setViewpointByQuaternion(client, pos, q)
@@ -95,15 +107,11 @@ end
 end
 
 @inline function getViewpointByDegreesD(client, x, y, z, yaw, pitch, roll)
-    return jcall(
-        client, "getViewpointByDegreesD", Vector{jbyte}, (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), x, y, z, yaw, pitch, roll
-    )
+    return jcall(client, "getViewpointByDegreesD", Vector{jbyte}, (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), x, y, z, yaw, pitch, roll)
 end
 
 @inline function getViewpointByRadians(client, x, y, z, yaw, pitch, roll)
-    return jcall(
-        client, "getViewpointByRadians", Vector{jbyte}, (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), x, y, z, yaw, pitch, roll
-    )
+    return jcall(client, "getViewpointByRadians", Vector{jbyte}, (jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), x, y, z, yaw, pitch, roll)
 end
 
 @inline function getViewpointByFrame(client, oid, fid)

@@ -279,51 +279,9 @@ end
 end
 
 @inline function setCameraMotion(client, cid, vx, vy, vz, rx, ry, rz, ax, ay, az, sx, sy, sz, jx, jy, jz, tx, ty, tz)
-    return jcall(
-        client,
-        "setCameraMotion",
-        Cvoid,
-        (
-            jlong,
-            jdouble,
-            jdouble,
-            jdouble,
-            jdouble,
-            jdouble,
-            jdouble,
-            jdouble,
-            jdouble,
-            jdouble,
-            jdouble,
-            jdouble,
-            jdouble,
-            jdouble,
-            jdouble,
-            jdouble,
-            jdouble,
-            jdouble,
-            jdouble,
-        ),
-        cid,
-        vx,
-        vy,
-        vz,
-        rx,
-        ry,
-        rz,
-        ax,
-        ay,
-        az,
-        sx,
-        sy,
-        sz,
-        jx,
-        jy,
-        jz,
-        tx,
-        ty,
-        tz,
-    )
+    return jcall(client, "setCameraMotion", Cvoid, (jlong, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble,
+            jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble),
+        cid, vx, vy, vz, rx, ry, rz, ax, ay, az, sx, sy, sz, jx, jy, jz, tx, ty, tz)
 end
 
 @inline function setStarMagnitudes(client, m)
@@ -429,6 +387,11 @@ end
 
 @inline function getFrame(client, obj, frame)
     return jcall(client, "getFrame", Vector{jdouble}, (jlong, jlong), obj, long)
+end
+
+@inline function getCameraProperties(client, cid)
+    CameraProperties = @jimport uk.ac.dundee.spacetech.pangu.ClientLibrary.CameraProperties
+    return jcall(client, "getCameraProperties", CameraProperties, (jlong, ), cid)
 end
 
 @inline function stop(client)

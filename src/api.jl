@@ -394,6 +394,27 @@ end
     return jcall(client, "getCameraProperties", CameraProperties, (jlong, ), cid)
 end
 
+@inline function lookupPoint(client, x, y)
+    ValidPoint = @jimport uk.ac.dundee.spacetech.pangu.ClientLibrary.ValidPoint
+    Vector2D = @jimport uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector2D
+    Vector3D = @jimport uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D
+    vec = Vector2D((jdouble, jdouble), x, y)
+    out = jcall(client, "lookupPoint", ValidPoint, (Vector2D, ), vec)
+    outPoint = jfield(out, "point", Vector3D)
+    return Vector3D_toJulia(outPoint)
+end
+
+@inline function lookupPoints(client, n, xy...)     # n is not used, but mentionned in the doc
+    ValidPoint = @jimport uk.ac.dundee.spacetech.pangu.ClientLibrary.ValidPoint
+    Vector2D = @jimport uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector2D
+    Vector3D = @jimport uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D
+    vec = [Vector2D((jdouble, jdouble), xy[i], xy[i+1]) for i in 1:2:lastindex(xy)]
+    out = jcall(client, "lookupPoints", Vector{ValidPoint}, (Vector{Vector2D}, ), vec)
+    return [Vector3D_toJulia(jfield(out[i], "point", Vector3D)) for i in eachindex(vec)]
+end
+
+@inline Vector3D_toJulia(v) =  [jfield(v, "i", jdouble), jfield(v, "j", jdouble), jfield(v, "k", jdouble)]
+
 @inline function stop(client)
     return jcall(client, "stop", Cvoid, ())
 end

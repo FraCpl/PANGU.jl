@@ -328,6 +328,11 @@ end
     return setObjectPositionAttitude(client, n, x, y, z, q0, qx, qy, qz)
 end
 
+@inline function setObjectPositionAttitude(client, n, pose)
+    x, y, z, q0, qx, qy, qz = pose
+    return setObjectPositionAttitude(client, n, x, y, z, q0, qx, qy, qz)
+end
+
 @inline function setObjectView(client, oid, type)
     return jcall(client, "setObjectView", Cvoid, (jlong, jlong), oid, type)
 end

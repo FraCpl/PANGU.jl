@@ -423,7 +423,18 @@ end
 @inline function getLidarSnapshot(client, cid, x, y, z, q0, qx, qy, qz)
     LidarSnapshot = @jimport uk.ac.dundee.spacetech.pangu.ClientLibrary.LidarSnapshot
     ls = jcall(client, "getLidarSnapshot", LidarSnapshot, (jlong, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), cid, x, y, z, q0, qx, qy, qz)
-    return jfield(ls, "data", Vector{jfloat})
+    width = jfield(ls, "width", jlong)
+    height = jfield(ls, "height", jlong)
+    data = jfield(ls, "data", Vector{jfloat})
+    outRange = zeros(eltype(data), height, width)
+    outSlope = zeros(eltype(data), height, width)
+    k = 1
+    @inbounds for j in 1:height, i in 1:width
+        outRange[j, i] = data[3*k - 2] * data[3*k]
+        outSlope[j, i] = data[3*k - 1] * data[3*k]
+        k += 1
+    end
+    return outRange, outSlope
 end
 
 @inline function getLidarSnapshot(client, cid, pos, q)

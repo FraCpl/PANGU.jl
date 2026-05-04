@@ -2,7 +2,7 @@
 @inline function launchServer(args::String="", port::Int=10363; rmlogs=true)
     # Check if setup has been done or not
     if isnothing(panguDir()) || isnothing(javasdkDir())
-        @error "PANGU has not been setup properly. Please launch 'setupPangu(panguDir=..., javasdkDir=...)' and retry"
+        @error "PANGU has not been setup properly. Please launch 'PANGU.setup(panguDir=..., javasdkDir=...)' and retry"
         return nothing
     end
 
@@ -419,6 +419,18 @@ end
 end
 
 @inline Vector3D_toJulia(v) =  [jfield(v, "i", jdouble), jfield(v, "j", jdouble), jfield(v, "k", jdouble)]
+
+@inline function getLidarSnapshot(client, cid, x, y, z, q0, qx, qy, qz)
+    LidarSnapshot = @jimport uk.ac.dundee.spacetech.pangu.ClientLibrary.LidarSnapshot
+    ls = jcall(client, "getLidarSnapshot", LidarSnapshot, (jlong, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), cid, x, y, z, q0, qx, qy, qz)
+    return jfield(ls, "data", Vector{jfloat})
+end
+
+@inline function getLidarSnapshot(client, cid, pos, q)
+    x, y, z = pos
+    q0, qx, qy, qz = q
+    return getLidarSnapshot(client, cid, x, y, z, q0, qx, qy, qz)
+end
 
 @inline function stop(client)
     return jcall(client, "stop", Cvoid, ())

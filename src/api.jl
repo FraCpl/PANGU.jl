@@ -429,7 +429,7 @@ end
     outRange = zeros(eltype(data), height, width)
     outSlope = zeros(eltype(data), height, width)
     k = 1
-    @inbounds for j in 1:height, i in 1:width
+    @inbounds for i in 1:width, j in 1:height
         outRange[j, i] = data[3*k - 2] * data[3*k]
         outSlope[j, i] = data[3*k - 1] * data[3*k]
         k += 1

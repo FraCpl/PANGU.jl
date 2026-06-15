@@ -420,7 +420,6 @@ end
 
 @inline Vector3D_toJulia(v) =  [jfield(v, "i", jdouble), jfield(v, "j", jdouble), jfield(v, "k", jdouble)]
 
-# uk.ac.dundee.spacetech.pangu.ClientLibrary.ValidPoint getPoint(uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D)
 @inline function getPoint(client, x, y, z)
     Vector3D = @jimport uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D
     ValidPoint = @jimport uk.ac.dundee.spacetech.pangu.ClientLibrary.ValidPoint
@@ -429,7 +428,6 @@ end
     return Vector3D_toJulia(jfield(out, "point", Vector3D))
 end
 
-# uk.ac.dundee.spacetech.pangu.ClientLibrary.ValidPoint[] getPoints(uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D[])
 @inline function getPoints(client, n, xyz...)     # n is not used, but mentionned in the doc
     ValidPoint = @jimport uk.ac.dundee.spacetech.pangu.ClientLibrary.ValidPoint
     Vector3D = @jimport uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D
@@ -473,11 +471,10 @@ end
 # void expect(int)
 # java.io.DataOutputStream getOutputStream()
 # byte[] echo(byte[])
-# uk.ac.dundee.spacetech.pangu.ClientLibrary.ValidPoint getPoint(uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D)
 # java.util.Vector getFrames(long)
 # uk.ac.dundee.spacetech.pangu.ClientLibrary.ValidTimeTag getTimeTag()
 # java.util.Vector getJoints(long)
-# uk.ac.dundee.spacetech.pangu.ClientLibrary.ValidPoint[] getPoints(uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D[])
+
 # uk.ac.dundee.spacetech.pangu.ClientLibrary.ValidElevation[] getElevations(uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D[])
 # double[] getJointConfig(long, long)
 # byte[] getViewpointByQuaternionS(float, float, float, float, float, float, float)

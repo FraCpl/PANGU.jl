@@ -15,3 +15,5 @@ ax1.yreversed = true
 ax2 = Axis(fig[1, 2], aspect=DataAspect())
 heatmap!(ax2, slopeImg)
 ax2.yreversed = true
+
+PANGU.getPoints(client, 0, 0.0, 0.0, -1.0, 0.0, 0.1, -0.9)

@@ -420,6 +420,24 @@ end
 
 @inline Vector3D_toJulia(v) =  [jfield(v, "i", jdouble), jfield(v, "j", jdouble), jfield(v, "k", jdouble)]
 
+# uk.ac.dundee.spacetech.pangu.ClientLibrary.ValidPoint getPoint(uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D)
+@inline function getPoint(client, x, y, z)
+    Vector3D = @jimport uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D
+    ValidPoint = @jimport uk.ac.dundee.spacetech.pangu.ClientLibrary.ValidPoint
+    dir = Vector3D((jdouble, jdouble, jdouble), x, y, z)
+    out = jcall(client, "getPoint", ValidPoint, (Vector3D, ), dir)
+    return Vector3D_toJulia(jfield(out, "point", Vector3D))
+end
+
+# uk.ac.dundee.spacetech.pangu.ClientLibrary.ValidPoint[] getPoints(uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D[])
+@inline function getPoints(client, n, xyz...)     # n is not used, but mentionned in the doc
+    ValidPoint = @jimport uk.ac.dundee.spacetech.pangu.ClientLibrary.ValidPoint
+    Vector3D = @jimport uk.ac.dundee.spacetech.pangu.ClientLibrary.Vector3D
+    dirs = [Vector3D((jdouble, jdouble, jdouble), xyz[i], xyz[i+1], xyz[i+2]) for i in 1:3:lastindex(xyz)]
+    out = jcall(client, "getPoints", Vector{ValidPoint}, (Vector{Vector3D}, ), dirs)
+    return [Vector3D_toJulia(jfield(out[i], "point", Vector3D)) for i in eachindex(dirs)]
+end
+
 @inline function getLidarSnapshot(client, cid, x, y, z, q0, qx, qy, qz)
     LidarSnapshot = @jimport uk.ac.dundee.spacetech.pangu.ClientLibrary.LidarSnapshot
     ls = jcall(client, "getLidarSnapshot", LidarSnapshot, (jlong, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble), cid, x, y, z, q0, qx, qy, qz)

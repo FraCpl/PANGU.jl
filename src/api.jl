@@ -35,8 +35,9 @@ function makeConnection(port::Int=10363)
     # Initialize JVM with both jar and class directory in the classpath
     jarPath = joinpath(panguDir(), "bin", "pangu_client_library.jar")
     classDir = joinpath(panguDir(), "java", "pangu_client_library")
+    sep = Sys.islinux() ? ":" : ";"
     try
-        JavaCall.init(["-Xmx2G", "-Djava.class.path=$(jarPath);$(classDir)"])
+        JavaCall.init(["-Xmx2G", "-Djava.class.path=$(jarPath)$sep$(classDir)"])
     catch
     end
 
